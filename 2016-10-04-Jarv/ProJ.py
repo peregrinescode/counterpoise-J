@@ -78,6 +78,24 @@ def CalcJ():
 	print "HOMO-HOMO coupling: ", JAB[nhomoA,nhomoB]/27.211, " Ha"
 	print "LUMO-LUMO coupling: ", JAB[nhomoA+1,nhomoB+1]/27.211, " Ha"
 
+# These are I think due to Bjorn Baumeir 2009-09-17
+
+# Determine overlap analogous to JAB
+        SAB = np.dot(PsiB_DimBS , np.transpose(PsiA_DimBS) )
+        # Calculate JAB_eff according to Eq.10 in JACS 128, 9884 (2006)
+        # !only for the desired orbitals! 
+       
+        print "Bjorn Baumeir JAB_eff (Eq.10 in JACS 128, 9884 (2006)) "
+        orbA=nhomoA
+        orbB=nhomoB
+        JAB_eff = (JAB[orbA,orbB] - 0.5*(JAA[orbA,orbA]+JBB[orbB,orbB])*SAB[orbA,orbB])/(1.0 - SAB[orbA,orbB]*SAB[orbA,orbB])
+        print "HOMO-HOMO - Jeff", JAB_eff
+        
+        orbA=nhomoA+1
+        orbB=nhomoB+1
+        JAB_eff = (JAB[orbA,orbB] - 0.5*(JAA[orbA,orbA]+JBB[orbB,orbB])*SAB[orbA,orbB])/(1.0 - SAB[orbA,orbB]*SAB[orbA,orbB])
+        print "Bjorn Baumeir JAB_eff (Eq.10 in JACS 128, 9884 (2006)) ",JAB_eff
+        print "LUMO-LUMO - Jeff", JAB_eff
 
 	return [JAB, JAA, JBB]
 
