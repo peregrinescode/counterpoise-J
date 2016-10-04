@@ -45,7 +45,6 @@ def CalcJ():
 	PsiB_DimBS = np.dot(molB.mocoeffs[0], MolAB_Pro)
 #    print "Dim Mocoeffs: ", molAB.moenergies[0]/27.211
 
-
 	JAB=np.dot(np.dot(np.diagflat(molAB.moenergies[0]),PsiA_DimBS), np.transpose(PsiB_DimBS) )
 	JAA=np.dot(np.dot(np.diagflat(molAB.moenergies[0]),PsiA_DimBS), np.transpose(PsiA_DimBS) )
 	JBB=np.dot(np.dot(np.diagflat(molAB.moenergies[0]),PsiB_DimBS), np.transpose(PsiB_DimBS) )
@@ -56,10 +55,29 @@ def CalcJ():
 
 	print "HOMO-HOMO coupling: ", JAB[nhomoA,nhomoB], " eV"
 	print "LUMO-LUMO coupling: ", JAB[nhomoA+1,nhomoB+1], " eV"
-
 #Note: CCLIB values in eV, so converted to Hartree for checking with JKP original code
 	print "HOMO-HOMO coupling: ", JAB[nhomoA,nhomoB]/27.211, " Ha"
 	print "LUMO-LUMO coupling: ", JAB[nhomoA+1,nhomoB+1]/27.211, " Ha"
+
+# JKP - 2009-09-10 update (script pasted into email)
+        print("James KP 2009-09-10 re-order matrix multiplication...")
+# this is the bit I changed: note the different order of multiplication
+# I suspect that most mistakes will tend to be of that kind... x.y != y.x alas...
+
+        JAB = np.dot(np.dot( PsiB_DimBS, np.diagflat(molAB.moenergies[0])) , np.transpose(PsiA_DimBS) )
+        JAA = np.dot(np.dot( PsiA_DimBS, np.diagflat(molAB.moenergies[0])) , np.transpose(PsiA_DimBS) )
+        JBB = np.dot(np.dot( PsiB_DimBS, np.diagflat(molAB.moenergies[0])) , np.transpose(PsiB_DimBS) )
+
+# I think these are hardwired by James to look at ethene molecular orbital overlaps
+   # print "PSI1 in dimer", PsiA_DimBS[3][0], PsiA_DimBS[3][1], PsiA_DimBS[3][2], PsiA_DimBS[3][3] , PsiA_DimBS[3][4], PsiA_DimBS[3][5], PsiA_DimBS[3][6], PsiA_DimBS[3][7]
+   # print "PSI1 in dimer", PsiB_DimBS[3][0], PsiB_DimBS[3][1], PsiB_DimBS[3][2], PsiB_DimBS[3][3] , PsiB_DimBS[3][4], PsiB_DimBS[3][5], PsiB_DimBS[3][6], PsiB_DimBS[3][7]
+
+	print "HOMO-HOMO coupling: ", JAB[nhomoA,nhomoB], " eV"
+	print "LUMO-LUMO coupling: ", JAB[nhomoA+1,nhomoB+1], " eV"
+#Note: CCLIB values in eV, so converted to Hartree for checking with JKP original code
+	print "HOMO-HOMO coupling: ", JAB[nhomoA,nhomoB]/27.211, " Ha"
+	print "LUMO-LUMO coupling: ", JAB[nhomoA+1,nhomoB+1]/27.211, " Ha"
+
 
 	return [JAB, JAA, JBB]
 
