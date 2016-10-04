@@ -7,7 +7,7 @@ namecalc=$3
 
 echo "%nprocshared=4
 %mem=500Mb
-#p IOp(6/7=3) METHOD nosymm
+#p SCF(Tight,Conver=8) Integral(Grid=UltraFine) IOp(6/7=3) METHOD nosymm
 
 autogen
 
