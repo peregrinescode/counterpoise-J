@@ -1,7 +1,7 @@
 # Code to calculate transfer integrals via a Counterpoise (Gaussian 'ghost' atoms) method
 # Original code by James Kirkpatrick 2009
 # Reimplemented with CCLIB by Jarvist Moore frost 2009
-# Addition by Bjorn Baumeir to calculate JAB_eff (Eq.10 in JACS 128, 9884 (2006)), 2009
+# Addition by Bjorn Baumeier to calculate JAB_eff (Eq.10 in JACS 128, 9884 (2006)), 2009
 # Aggregation of various code bases and attempt to figure out what on earth is going on; Beth Rice and Jarvist Moore Frost 2016.
 
 import numpy as np
@@ -41,9 +41,13 @@ def CalcJ():
     nhomoB=molB.homos
     nhomoAB=molAB.homos
 
+    print "Energy splitting in dimer"
+    print "HOMO-HOMO coupling: ",(molAB.moenergies[0][nhomoAB]-molAB.moenergies[0][nhomoAB-1])/2.0," eV"
+    print "LUMO-LUMO coupling: ",(molAB.moenergies[0][nhomoAB+2]-molAB.moenergies[0][nhomoAB+1])/2.0," eV"
+
 #Take mocoeffs[0] - the alpha electrons, to get matrix in correct order
     MolAB_Pro = np.transpose(np.dot(molAB.mocoeffs[0],molAB.aooverlaps))
-    
+   
     PsiA_DimBS = np.dot(molA.mocoeffs[0], MolAB_Pro)
     PsiB_DimBS = np.dot(molB.mocoeffs[0], MolAB_Pro)
 #    print "Dim Mocoeffs: ", molAB.moenergies[0]/27.211
@@ -83,7 +87,7 @@ def CalcJ():
     print "HOMO-HOMO coupling: ", JAB[nhomoA,nhomoB]/27.211, " Ha"
     print "LUMO-LUMO coupling: ", JAB[nhomoA+1,nhomoB+1]/27.211, " Ha"
 
-# JMF 2016-10-04: These additions are I think due to Bjorn Baumeir 2009-09-17
+# JMF 2016-10-04: These additions are I think due to Bjorn Baumeier 2009-09-17
 # Determine overlap analogous to JAB
     SAB = np.dot(PsiB_DimBS , np.transpose(PsiA_DimBS) )
     # Calculate JAB_eff according to Eq.10 in JACS 128, 9884 (2006)
@@ -93,12 +97,12 @@ def CalcJ():
     orbA=nhomoA
     orbB=nhomoB
     JAB_eff = (JAB[orbA,orbB] - 0.5*(JAA[orbA,orbA]+JBB[orbB,orbB])*SAB[orbA,orbB])/(1.0 - SAB[orbA,orbB]*SAB[orbA,orbB])
-    print "HOMO-HOMO - Jeff", JAB_eff
+    print "HOMO-HOMO Jeff-coupling", JAB_eff," eV"
 
     orbA=nhomoA+1
     orbB=nhomoB+1
     JAB_eff = (JAB[orbA,orbB] - 0.5*(JAA[orbA,orbA]+JBB[orbB,orbB])*SAB[orbA,orbB])/(1.0 - SAB[orbA,orbB]*SAB[orbA,orbB])
-    print "LUMO-LUMO - Jeff", JAB_eff
+    print "LUMO-LUMO Jeff-coupling", JAB_eff, " eV"
 
     return [JAB, JAA, JBB]
 
