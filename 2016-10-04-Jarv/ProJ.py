@@ -46,7 +46,6 @@ def CalcJ():
 #    print "Dim Mocoeffs: ", molAB.moenergies[0]/27.211
 
 
-#Note: moenergies in eV, so converted to Hartree for checking with JKP code
 	JAB=np.dot(np.dot(np.diagflat(molAB.moenergies[0]),PsiA_DimBS), np.transpose(PsiB_DimBS) )
 	JAA=np.dot(np.dot(np.diagflat(molAB.moenergies[0]),PsiA_DimBS), np.transpose(PsiA_DimBS) )
 	JBB=np.dot(np.dot(np.diagflat(molAB.moenergies[0]),PsiB_DimBS), np.transpose(PsiB_DimBS) )
@@ -55,9 +54,12 @@ def CalcJ():
 	#print "JAA", JAA
 	#print "JBB", JBB
 
-	print "HOMO-HOMO coupling: ", JAB[nhomoA,nhomoB]
-	print "LUMO-LUMO coupling: ", JAB[nhomoA+1,nhomoB+1]
+	print "HOMO-HOMO coupling: ", JAB[nhomoA,nhomoB], " eV"
+	print "LUMO-LUMO coupling: ", JAB[nhomoA+1,nhomoB+1], " eV"
 
+#Note: CCLIB values in eV, so converted to Hartree for checking with JKP original code
+	print "HOMO-HOMO coupling: ", JAB[nhomoA,nhomoB]/27.211, " Ha"
+	print "LUMO-LUMO coupling: ", JAB[nhomoA+1,nhomoB+1]/27.211, " Ha"
 
 	return [JAB, JAA, JBB]
 
