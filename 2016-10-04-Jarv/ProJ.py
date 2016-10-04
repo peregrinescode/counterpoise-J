@@ -94,7 +94,6 @@ def CalcJ():
         orbA=nhomoA+1
         orbB=nhomoB+1
         JAB_eff = (JAB[orbA,orbB] - 0.5*(JAA[orbA,orbA]+JBB[orbB,orbB])*SAB[orbA,orbB])/(1.0 - SAB[orbA,orbB]*SAB[orbA,orbB])
-        print "Bjorn Baumeir JAB_eff (Eq.10 in JACS 128, 9884 (2006)) ",JAB_eff
         print "LUMO-LUMO - Jeff", JAB_eff
 
 	return [JAB, JAA, JBB]
