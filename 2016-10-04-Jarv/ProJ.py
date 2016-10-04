@@ -93,7 +93,7 @@ def CalcJ():
     # Calculate JAB_eff according to Eq.10 in JACS 128, 9884 (2006)
     # !only for the desired orbitals!
 
-    print "Bjorn Baumeir JAB_eff (Eq.10 in JACS 128, 9884 (2006)) "
+    print "Bjorn Baumeier JAB_eff (Eq.10 in JACS 128, 9884 (2006)) "
     orbA=nhomoA
     orbB=nhomoB
     JAB_eff = (JAB[orbA,orbB] - 0.5*(JAA[orbA,orbA]+JBB[orbB,orbB])*SAB[orbA,orbB])/(1.0 - SAB[orbA,orbB]*SAB[orbA,orbB])
