@@ -4,6 +4,7 @@
 # Addition by Bjorn Baumeier to calculate JAB_eff (Eq.10 in JACS 128, 9884 (2006)), 2009
 # Aggregation of various code bases and attempt to figure out what on earth is going on; Beth Rice and Jarvist Moore Frost 2016.
 
+from __future__ import print_function # Allows sensible use of print() with printf style formatting
 import numpy as np
 from cclib.parser import ccopen
 import sys
@@ -26,7 +27,7 @@ def CalcJ():
     molA=molA_parser.parse()
     molB=molB_parser.parse()
     molAB=molAB_parser.parse()
-    print ("Gaussian logfiles Loaded and Parsed...")
+    print("Gaussian logfiles Loaded and Parsed...")
 
     nbs=molAB.nbasis
     if molA.nbasis!=molB.nbasis:
@@ -41,9 +42,9 @@ def CalcJ():
     nhomoB=molB.homos
     nhomoAB=molAB.homos
 
-    print "Energy splitting in dimer"
-    print "HOMO-HOMO coupling: ",(molAB.moenergies[0][nhomoAB]-molAB.moenergies[0][nhomoAB-1])/2.0," eV"
-    print "LUMO-LUMO coupling: ",(molAB.moenergies[0][nhomoAB+2]-molAB.moenergies[0][nhomoAB+1])/2.0," eV"
+    print("Energy splitting in dimer")
+    print('ESID HOMO-HOMO coupling: ',(molAB.moenergies[0][nhomoAB]-molAB.moenergies[0][nhomoAB-1])/2.0," eV")
+    print('ESID LUMO-LUMO coupling: ',(molAB.moenergies[0][nhomoAB+2]-molAB.moenergies[0][nhomoAB+1])/2.0," eV")
 
 #Take mocoeffs[0] - the alpha electrons, to get matrix in correct order
     MolAB_Pro = np.transpose(np.dot(molAB.mocoeffs[0],molAB.aooverlaps))
@@ -53,16 +54,16 @@ def CalcJ():
 #    print "Dim Mocoeffs: ", molAB.moenergies[0]/27.211
 
 # JMF 2009-08 CCLIB code to reproduce JKP's original values for Ethene. BELIEVED INCORRECT.
-    print "Original James KP method; matrix multiplication believed out of order."
+    print("Original James KP method; matrix multiplication believed out of order.")
     JAB=np.dot(np.dot(np.diagflat(molAB.moenergies[0]),PsiA_DimBS), np.transpose(PsiB_DimBS) )
     JAA=np.dot(np.dot(np.diagflat(molAB.moenergies[0]),PsiA_DimBS), np.transpose(PsiA_DimBS) )
     JBB=np.dot(np.dot(np.diagflat(molAB.moenergies[0]),PsiB_DimBS), np.transpose(PsiB_DimBS) )
 
-    print "HOMO-HOMO coupling: ", JAB[nhomoA,nhomoB], " eV"
-    print "LUMO-LUMO coupling: ", JAB[nhomoA+1,nhomoB+1], " eV"
+    print("JKP HOMO-HOMO coupling: ", JAB[nhomoA,nhomoB], " eV")
+    print("JKP LUMO-LUMO coupling: ", JAB[nhomoA+1,nhomoB+1], " eV")
 #Note: CCLIB values in eV, so converted to Hartree for checking with JKP original code
-    print "HOMO-HOMO coupling: ", JAB[nhomoA,nhomoB]/27.211, " Ha"
-    print "LUMO-LUMO coupling: ", JAB[nhomoA+1,nhomoB+1]/27.211, " Ha"
+    print("JKP HOMO-HOMO coupling: ", JAB[nhomoA,nhomoB]/27.211, " Ha")
+    print("JKP LUMO-LUMO coupling: ", JAB[nhomoA+1,nhomoB+1]/27.211, " Ha")
 
 # JKP - 2009-09-10 update (script pasted into email)
     print("James KP 2009-09-10 re-order matrix multiplication...")
@@ -81,11 +82,11 @@ def CalcJ():
     # print "PSI1 in dimer", PsiA_DimBS[3][0], PsiA_DimBS[3][1], PsiA_DimBS[3][2], PsiA_DimBS[3][3] , PsiA_DimBS[3][4], PsiA_DimBS[3][5], PsiA_DimBS[3][6], PsiA_DimBS[3][7]
     # print "PSI1 in dimer", PsiB_DimBS[3][0], PsiB_DimBS[3][1], PsiB_DimBS[3][2], PsiB_DimBS[3][3] , PsiB_DimBS[3][4], PsiB_DimBS[3][5], PsiB_DimBS[3][6], PsiB_DimBS[3][7]
 
-    print "HOMO-HOMO coupling: ", JAB[nhomoA,nhomoB], " eV"
-    print "LUMO-LUMO coupling: ", JAB[nhomoA+1,nhomoB+1], " eV"
+    print("JKP2 HOMO-HOMO coupling: ", JAB[nhomoA,nhomoB], " eV")
+    print("JKP2 LUMO-LUMO coupling: ", JAB[nhomoA+1,nhomoB+1], " eV")
 #Note: CCLIB values in eV, so converted to Hartree for checking with JKP original code
-    print "HOMO-HOMO coupling: ", JAB[nhomoA,nhomoB]/27.211, " Ha"
-    print "LUMO-LUMO coupling: ", JAB[nhomoA+1,nhomoB+1]/27.211, " Ha"
+    print("JKP2 HOMO-HOMO coupling: ", JAB[nhomoA,nhomoB]/27.211, " Ha")
+    print("JKP2 LUMO-LUMO coupling: ", JAB[nhomoA+1,nhomoB+1]/27.211, " Ha")
 
 # JMF 2016-10-04: These additions are I think due to Bjorn Baumeier 2009-09-17
 # Determine overlap analogous to JAB
@@ -93,16 +94,16 @@ def CalcJ():
     # Calculate JAB_eff according to Eq.10 in JACS 128, 9884 (2006)
     # !only for the desired orbitals!
 
-    print "Bjorn Baumeier JAB_eff (Eq.10 in JACS 128, 9884 (2006)) "
+    print("Bjorn Baumeier JAB_eff (Eq.10 in JACS 128, 9884 (2006)) ")
     orbA=nhomoA
     orbB=nhomoB
     JAB_eff = (JAB[orbA,orbB] - 0.5*(JAA[orbA,orbA]+JBB[orbB,orbB])*SAB[orbA,orbB])/(1.0 - SAB[orbA,orbB]*SAB[orbA,orbB])
-    print "HOMO-HOMO Jeff-coupling", JAB_eff," eV"
+    print("Jeff HOMO-HOMO Jeff-coupling", JAB_eff," eV")
 
     orbA=nhomoA+1
     orbB=nhomoB+1
     JAB_eff = (JAB[orbA,orbB] - 0.5*(JAA[orbA,orbA]+JBB[orbB,orbB])*SAB[orbA,orbB])/(1.0 - SAB[orbA,orbB]*SAB[orbA,orbB])
-    print "LUMO-LUMO Jeff-coupling", JAB_eff, " eV"
+    print("Jeff LUMO-LUMO Jeff-coupling", JAB_eff, " eV")
 
     return [JAB, JAA, JBB]
 
