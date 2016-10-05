@@ -1,6 +1,10 @@
 #!/bin/julia
 # Forked from https://github.com/jarvist/VASP_LatheOfHeaven/blob/b5f66a49cfd5d43745adc22bb52457b27f0def04/rotate_MA_POSCAR.jl
 
+# This provides the ability to ROTATE a molecule, and PROJECT along a vector
+# It would be more elegant to use Dual-Quarternions, as currently the 6 degrees of freedom are over-specified with 9 parameters
+# https://en.wikipedia.org/wiki/Dual_quaternion#Dual_quaternions_and_spatial_displacements
+
 # What Would Hamilton Do? (WWHD?)
 using Quaternions
 
