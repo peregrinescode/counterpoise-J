@@ -1,0 +1,18 @@
+Gaussian logfiles Loaded and Parsed...
+(<cclib.parser.data.ccData object at 0x7ff6b517e510>, ' calculation appears to be an optimisation (multiple steps)! Warning!')
+Energy splitting in dimer
+HOMO-HOMO coupling:  [ 0.37089117]  eV
+LUMO-LUMO coupling:  [ 0.37456471]  eV
+Original James KP method; matrix multiplication believed out of order.
+HOMO-HOMO coupling:  [-0.70637684 -0.00302226]  eV
+LUMO-LUMO coupling:  [-0.71344481 -0.70637684]  eV
+HOMO-HOMO coupling:  [-0.02595924 -0.00011107]  Ha
+LUMO-LUMO coupling:  [-0.02621899 -0.02595924]  Ha
+James KP 2009-09-10 re-order matrix multiplication...
+HOMO-HOMO coupling:  [-0.62760579 -0.00647408]  eV
+LUMO-LUMO coupling:  [-0.42243937 -0.62760579]  eV
+HOMO-HOMO coupling:  [-0.02306441 -0.00023792]  Ha
+LUMO-LUMO coupling:  [-0.01552458 -0.02306441]  Ha
+Bjorn Baumeier JAB_eff (Eq.10 in JACS 128, 9884 (2006))
+HOMO-HOMO Jeff-coupling [-0.36789644 -0.00523681]  eV
+LUMO-LUMO Jeff-coupling [-0.37800085 -0.36789644]  eV
