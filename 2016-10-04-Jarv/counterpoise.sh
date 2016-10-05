@@ -1,6 +1,6 @@
 #! /bin/bash
 
-method="b3lyp/6-311+g*"
+method="b3lyp/6-31g*"
 namemol1=$1
 namemol2=$2
 namecalc=$3
