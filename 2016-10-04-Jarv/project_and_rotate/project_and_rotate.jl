@@ -6,8 +6,7 @@ using Quaternions
 
 XYZs = readlines(open("test.xyz"))
 
-# Origin; about which we rotate 
-#origin=[0.5 0.5 0.5]' # origin of MA in unit cell, fractional coords
+# CALCULATE ORIGIN; about which we rotate the molecule
 
 # Read through XYZ file and calculate (atom position average, not mass weighted) centre-of-molecule
 sum=[0;0;0]
@@ -19,20 +18,27 @@ for XYZ in XYZs
 end
 println(sum)
 origin=sum/count
-println(STDERR, "Origin: ",origin)
+println(STDERR, "Molecule origin: ",origin)
 
-#shift=[5.0*randn() 5.0*randn() 5.0*randn()]'
-shift=[0 0 0]' # No shift
-
+# CALCULATE ROTATE; the rotation matrix for the molecule
 # Generate a normalized Quaternion with normally distributed random 4 component
 qr=normalize(Quaternion(randn(),randn(),randn(),randn()))
 # This should be an evenly distributed rotation matrix
 rotate=rotationmatrix(qr)
 #rotate=eye(3) #3-dimensional identity matrix; null rotation operation
-
 println(STDERR,"Determinant of 'rotate' matrix (should be 1): ",det(rotate))
 println(STDERR,"    Does Q^TQ = I? \n",rotate*rotate')
 
+# CALCULATE SHIFT; along which we project the rotated molecule
+# Normally distributed random shift
+#shift=[5.0*randn() 5.0*randn() 5.0*randn()]'
+#shift=[0 0 0]' # No shift
+shift=[5 0 0]'
+# Randomly rotate the shift matrix (i.e. project to a truly random point on the sphere)
+shift=rotationmatrix(normalize(Quaternion(randn(),randn(),randn(),randn())))*shift
+println(STDERR,"Projecting along: ",shift)
+
+# ITERATE through lines in XYZ file, and do the rotation/projection, line by line
 for XYZ in XYZs
     r=float(split(XYZ)[2:4]) # "Atom 1.2 3.4 5.6" --> [1.2; 3.4; 5.6]
     r=shift+origin+(rotate*(r-origin)) # apply shift + rotate, shift back
